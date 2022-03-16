@@ -103,6 +103,7 @@ def is_balanced_2(root: TreeNode) -> bool:
     """
     后序遍历 + 剪枝
     """
+
     def recur(root):
         if not root:
             return 0
@@ -121,7 +122,28 @@ def lowest_common_ancestor(root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'T
     """
     Offer 68-I. 二叉搜索树的最近公共祖先
     """
+    if root.val < p.val and root.val < q.val:
+        return lowest_common_ancestor(root.right, p, q)
+    if root.val > p.val and root.val > q.val:
+        return lowest_common_ancestor(root.left, p, q)
+    return root
 
+
+def lowest_common_ancestor_2(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    """
+    Offer 68-II. 二叉树的公共结点
+    """
+    if not root or root.val == p.val or root.val == q.val:
+        return root
+    left = lowest_common_ancestor_2(root.left, p, q)
+    right = lowest_common_ancestor_2(root.right, p, q)
+    if not left and not right:
+        return None     # 左右子树均不包含p,q
+    if not left:
+        return right    # 右子树包含p和q
+    if not right:
+        return left     # 左子树包含p和q
+    return root         # p,q分别落在root两侧
 
 
 if __name__ == "__main__":
