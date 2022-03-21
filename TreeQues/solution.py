@@ -1,4 +1,4 @@
-from LeeCode.TreeQues import TreeNode
+from TreeQues import TreeNode
 
 
 def level_order(root):

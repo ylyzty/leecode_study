@@ -1,4 +1,4 @@
-from LeeCode.LinkedListQues import ListNode
+from LinkedListQues import ListNode
 
 
 def delete_node(head: ListNode, val: int) -> ListNode:
