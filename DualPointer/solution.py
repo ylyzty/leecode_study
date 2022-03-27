@@ -51,5 +51,23 @@ def reverse_words(s: str) -> str:
     return ' '.join(res[::-1])
 
 
+def find_continuous_sequence(target: int) -> List[List[int]]:
+    """
+    Offer 57-II. 和为s的连续正数序列
+    滑动窗口法
+    """
+    left, right, temp, res = 1, 2, 3, []
+    while left < right:
+        if temp == target:
+            res.append(list(range(left, right + 1)))
+        if temp >= target:
+            temp -= left
+            left += 1
+        else:
+            right += 1
+            temp += right
+    return res
+
+
 if __name__ == "__main__":
-    print(reverse_words("the sky  is   blue"))
+    print(find_continuous_sequence(3))
