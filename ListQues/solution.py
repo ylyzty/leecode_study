@@ -87,6 +87,9 @@ class Solution:
         Offer 29. 顺时针打印矩阵
         时间复杂度 O(mn)
         """
+        if not matrix:
+            return []
+
         left, right, top, bottom = 0, len(matrix[0]), 0, len(matrix)
         res = []
         while True:
@@ -96,12 +99,12 @@ class Solution:
             if top >= bottom:
                 break
             for i in range(top, bottom):
-                res.append(matrix[i][right - 1])    # 从上至下
+                res.append(matrix[i][right - 1])  # 从上至下
             right -= 1
             if left >= right:
                 break
             for i in range(right - 1, left - 1, -1):
-                res.append(matrix[bottom - 1][i])   # 从右至左
+                res.append(matrix[bottom - 1][i])  # 从右至左
             bottom -= 1
             if top >= bottom:
                 break
@@ -113,20 +116,38 @@ class Solution:
         return res
 
     def spiral_order_2(self, matrix: List[List[int]]) -> List[int]:
+        """
+        时间复杂度O(MN)
+        空间复杂度O(MN)
+        """
+        if not matrix:
+            return []
+
         res = []
         directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
         visited = [[False for _ in range(len(matrix[0]))] for _ in range(len(matrix))]  # 辅助矩阵, 表示未访问
-        index = 0   # 当前方向
+        index = 0  # 当前方向
         row, column = 0, 0
         for i in range(len(matrix[0]) * len(matrix)):
             res.append(matrix[row][column])
             visited[row][column] = True
             next_row, next_column = row + directions[index][0], column + directions[index][1]
-            if not(0 <= next_row < len(matrix) and 0 <= next_column < len(matrix[0]) and not visited[next_row][next_column]):
+            if not (0 <= next_row < len(matrix) and 0 <= next_column < len(matrix[0]) and not visited[next_row][
+                next_column]):
                 index = (index + 1) % 4
             row += directions[index][0]
             column += directions[index][1]
         return res
+
+    def validate_stack_sequences(self, pushed: List[int], popped: List[int]) -> bool:
+        stack = []
+        index = 0
+        for i in range(len(pushed)):
+            stack.append(pushed[i])
+            while stack and stack[-1] == popped[index]:
+                index += 1
+                stack.pop()
+        return False if stack else True
 
 
 if __name__ == "__main__":

@@ -141,5 +141,15 @@ def length_of_longest_substring_2(s: str) -> int:
     return res
 
 
+def last_remaining(self, n: int, m: int):
+    """
+    Offer 62. 圆圈中最后剩下的数字
+    """
+    x = 0
+    for i in range(2, n + 1):
+        x = (x + m) % i
+    return x
+
+
 if __name__ == "__main__":
     print(num_ways(39))
