@@ -71,5 +71,30 @@ def number_sum(num: int) -> int:
     return res
 
 
+class Solution:
+    def permutation(self, s: str) -> List[str]:
+        """
+        Offer 38. 字符串的排列
+        固定每个位置，集合保存出现过的字符，避免重复
+        """
+        c, res = list(s), []
+        def dfs(index):
+            if index == len(c) - 1:
+                res.append(''.join(c))
+                return
+            dic = set()  # 每个固定的x位置均存在一个set()
+            for i in range(index, len(c)):
+                if c[i] in dic:
+                    continue
+                dic.add(c[i])
+                c[i], c[index] = c[index], c[i]
+                dfs(index + 1)
+                c[i], c[index] = c[index], c[i]
+
+        dfs(0)
+        return res
+
+
 if __name__ == "__main__":
-    print(moving_count_2(1, 2, 1))
+    s = Solution()
+    print(s.permutation("abc"))
