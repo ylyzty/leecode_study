@@ -8,9 +8,10 @@ from typing import List
 
 class Solution:
 
-    def majority_element(self, nums: List[int]) -> int:
+    @staticmethod
+    def majority_element(nums: List[int]) -> int:
         """
-        Offer 39. 数组中出现次数超过一般的数字
+        Offer 39. 数组中出现次数超过一半的数字
         1、摩尔投票法
         2、哈希表统计法
         """

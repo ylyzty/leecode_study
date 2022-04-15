@@ -1,6 +1,8 @@
 from typing import List
 
 from ListQues import ListNode
+import queue
+import collections
 
 
 def delete_node(head: ListNode, val: int) -> ListNode:
@@ -82,7 +84,8 @@ def last_remaining(n: int, m: int) -> int:
 
 
 class Solution:
-    def spiral_order(self, matrix: List[List[int]]) -> List[int]:
+    @staticmethod
+    def spiral_order(matrix: List[List[int]]) -> List[int]:
         """
         Offer 29. 顺时针打印矩阵
         时间复杂度 O(mn)
@@ -115,7 +118,8 @@ class Solution:
                 break
         return res
 
-    def spiral_order_2(self, matrix: List[List[int]]) -> List[int]:
+    @staticmethod
+    def spiral_order_2(matrix: List[List[int]]) -> List[int]:
         """
         时间复杂度O(MN)
         空间复杂度O(MN)
@@ -139,7 +143,8 @@ class Solution:
             column += directions[index][1]
         return res
 
-    def validate_stack_sequences(self, pushed: List[int], popped: List[int]) -> bool:
+    @staticmethod
+    def validate_stack_sequences(pushed: List[int], popped: List[int]) -> bool:
         stack = []
         index = 0
         for i in range(len(pushed)):
@@ -148,6 +153,32 @@ class Solution:
                 index += 1
                 stack.pop()
         return False if stack else True
+
+
+class MaxQueue:
+    def __init__(self):
+        self.queue = queue.Queue()
+        self.deque = collections.deque()
+
+    def max_value(self) -> int:
+        return self.deque[-1] if self.deque else -1
+
+    def push_back(self, value: int):
+        """
+        先加入的数据小于后加入的数据无需存储在双向队列中
+        """
+        self.queue.put(value)
+        while self.deque and self.deque[-1] < value:
+            self.deque.pop()
+        self.deque.append(value)
+
+    def pop_front(self) -> int:
+        if self.queue.empty():
+            return -1
+        val = self.queue.get()
+        if val == self.deque[0]:
+            self.deque.popleft()
+        return val
 
 
 if __name__ == "__main__":
