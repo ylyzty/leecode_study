@@ -4,6 +4,8 @@
 @Description: 双指针问题
 """
 from typing import List
+from collections import deque
+from queue import Queue
 
 
 def exchange(nums: List[int]) -> List[int]:
@@ -66,6 +68,32 @@ def find_continuous_sequence(target: int) -> List[List[int]]:
         else:
             right += 1
             temp += right
+    return res
+
+
+def max_sliding_window(nums: List[int], k: int) -> int:
+    if not nums:
+        return []
+    res = []
+    window = Queue()
+    value = deque()
+    for i in range(k):
+        window.put(nums[i])
+        while value and value[-1] < nums[i]:
+            value.pop()
+        value.append(nums[i])
+    res.append(value[0])
+    # i, j = 0, k
+    while k < len(nums):
+        num = window.get()
+        if num == value[0]:
+            value.popleft()
+        window.put(nums[k])
+        while value and value[-1] < nums[k]:
+            value.pop()
+        value.append(nums[k])
+        res.append(value[0])
+        k += 1
     return res
 
 

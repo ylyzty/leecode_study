@@ -29,6 +29,65 @@ class Solution:
             return INT_MIN
         return res
 
+    @staticmethod
+    def is_match(s: str, p: str) -> bool:
+        """
+        Offer 19. 正则表达式匹配
+        @Method: 动态规划
+        """
+        m, n = len(s) + 1, len(p) + 1
+        dp = [[False] * n for _ in range(m)]
+        # 初始化
+        dp[0][0] = True
+        for j in range(2, n, 2):
+            dp[0][j] = dp[0][j - 2] and p[j - 1] == '*'
+
+        # 转移方程
+        for i in range(1, m):
+            for j in range(1, n):
+                if p[j - 1] == '*':
+                    if dp[i][j - 2]:
+                        dp[i][j] = True
+                    elif dp[i - 1][j] and (s[i - 1] == p[j - 2] or p[j - 2] == '.'):
+                        dp[i][j] = True
+                    else:
+                        dp[i][j] = False
+                else:
+                    if dp[i - 1][j - 1] and (s[i - 1] == p[j - 1] or p[j - 1] == '.'):
+                        dp[i][j] = True
+        return dp[-1][-1]
+
+    @staticmethod
+    def is_match_recursion(s: str, p: str) -> bool:
+        """
+        Offer 19. 正则表达式匹配
+        @Method: 递归实现, 时间复杂度高
+        """
+        if not s:
+            if len(p) % 2 != 0:
+                return False
+            for i in range(1, len(p), 2):
+                if p[i] != '*':
+                    return False
+            return True
+
+        if not p:
+            return False
+
+        i, j, ch = 0, 0, 'a'
+        if j + 1 < len(p):
+            ch = p[j + 1]
+        if ch != '*':
+            if s[i] == p[j] or p[j] == '.':
+                return Solution.is_match_recursion(s[i + 1:], p[j + 1:])
+            else:
+                return False
+        else:
+            if s[i] == p[j] or p[j] == '.':
+                return Solution.is_match_recursion(s[i + 1:], p) or Solution.is_match_recursion(s, p[j + 2:])
+            else:
+                return Solution.is_match_recursion(s, p[j + 2:])
+
 
 if __name__ == "__main__":
     print(Solution.str_to_int("+"))
