@@ -16,6 +16,7 @@ def min_number(nums: List[int]) -> str:
     :param nums:
     :return:
     """
+
     def quick_sort(left: int, right: int):
         if left >= right:
             return
@@ -33,6 +34,7 @@ def min_number(nums: List[int]) -> str:
     """
     Python3自定义排序规则
     """
+
     def my_compare(str1: str, str2: str):
         if str1 + str2 > str2 + str1:
             return 1
@@ -106,5 +108,49 @@ class MedianFinder:
             return (self.min_heap[0] - self.max_heap[0]) / 2
 
 
+# @Tag: 归并排序
+class ReversePairs:
+    """
+    Offer 51. 数组中的逆序对
+    利用归并排序的过程记录逆序对数
+    """
+    @staticmethod
+    def reverse_pairs(nums: List[int]) -> int:
+        temp = [0] * len(nums)
+        return ReversePairs.merge_sort(nums, 0, len(nums) - 1, temp)
+
+    @staticmethod
+    def merge_sort(nums, left, right, temp):
+        if left >= right:
+            return 0
+        mid = (left + right) // 2
+
+        count = ReversePairs.merge_sort(nums, left, mid, temp) + ReversePairs.merge_sort(nums, mid + 1, right, temp)
+
+        i, j = left, mid + 1
+        pos = left
+        while i <= mid and j <= right:
+            if nums[i] <= nums[j]:
+                temp[pos] = nums[i]
+                i += 1
+                # count += j - mid - 1
+            else:
+                temp[pos] = nums[j]
+                j += 1
+                count += mid - i + 1
+            pos += 1
+        for k in range(i, mid + 1):
+            temp[pos] = nums[k]
+            # count += j - mid - 1
+            pos += 1
+        for k in range(j, right + 1):
+            temp[pos] = nums[k]
+            pos += 1
+
+        nums[left: right + 1] = temp[left: right + 1]
+        return count
+
+
 if __name__ == "__main__":
-    print(min_number([2, 20, 21, 10]))
+    nums = [7, 5, 6, 4]
+    print(ReversePairs.reverse_pairs(nums))

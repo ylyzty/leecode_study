@@ -97,5 +97,38 @@ def max_sliding_window(nums: List[int], k: int) -> int:
     return res
 
 
+def diStringMatch(s: str) -> List[int]:
+    res = [i for i in range(len(s) + 1)]
+    left, right = 0, 1
+    while right < len(res):
+        i, j = left, right
+        while i >= 0 and ((s[i] == 'I' and res[i] > res[j]) or (s[i] == 'D' and res[i] < res[j])):
+            res[i], res[j] = res[j], res[i]
+            i, j = i - 1, j - 1
+        left, right = left + 1, right + 1
+    return res
+
+
+def diStringMatch_2(s: str) -> List[int]:
+    """
+    LeeCode 942 增减字符串匹配
+    Tag: 贪心选择
+        - 如果当前字母s[i] == 'I', 则 res[i] = low 取可使用的最小值
+        - 如果当前字母s[i] == 'D', 则 res[i] = high 取可使用的最大值
+    """
+    low, high = 0, len(s)
+    res = [0 for i in range(len(s) + 1)]
+    for i, c in enumerate(s):
+        if c == 'I':
+            res[i] = low
+            low += 1
+        else:
+            res[i] = high
+            high -= 1
+    res[len(s)] = low    # 最后一个元素时low = high
+    return res
+
+
 if __name__ == "__main__":
-    print(find_continuous_sequence(3))
+    s = "DDI"
+    print(diStringMatch(s))
