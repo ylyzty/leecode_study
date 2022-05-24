@@ -4,6 +4,7 @@
 @Description: 回溯问题
 """
 from typing import List
+import queue
 
 
 def exist(board: List[List[str]], word: str) -> bool:
@@ -29,7 +30,7 @@ def exist_dfs(row: int, col: int, index: int, board: List[List[str]], word: str)
     return res
 
 
-# 宽度优先搜索
+# 广度优先搜索
 def moving_count(m: int, n: int, k: int) -> int:
     """
     Offer 13. 机器人的运动范围
@@ -94,7 +95,42 @@ class Solution:
         dfs(0)
         return res
 
+    def minMutation(self, start: str, end: str, bank: List[str]) -> int:
+        if not (end in bank) or len(start) != len(end):
+            return -1
+        if not (start in bank):
+            bank.append(start)
+
+        changes = 0
+        temp = queue.Queue()
+        used = set()
+
+        temp.put((start, changes))
+        used.add(start)
+        while not temp.empty():
+            cur = temp.get()
+
+            for i in range(len(bank)):
+                if not (bank[i] in used) and self.compareTwoString(cur[0], bank[i]):
+                    if bank[i] == end:
+                        return cur[1] + 1
+                    temp.put((bank[i], cur[1] + 1))
+                    used.add(bank[i])
+
+        return -1
+
+    # 比较两个字符串
+    def compareTwoString(self, str1: str, str2: str) -> bool:
+        if len(str1) != len(str2):
+            return False
+        count = 0
+        for i in range(len(str1)):
+            count += 1 if str1[i] != str2[i] else 0
+        return count == 1
+
 
 if __name__ == "__main__":
-    s = Solution()
-    print(s.permutation("abc"))
+    t = Solution()
+    start, end = "AACCGGTT", "AAACGGTA"
+    bank = ["AACCGGTA", "AACCGCTA", "AAACGGTA"]
+    print(t.minMutation(start, end, bank))

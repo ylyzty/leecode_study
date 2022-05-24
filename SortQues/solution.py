@@ -108,6 +108,48 @@ class MedianFinder:
             return (self.min_heap[0] - self.max_heap[0]) / 2
 
 
+# @Tag: 归并排序
+class ReversePairs:
+    """
+    Offer 51. 数组中的逆序对
+    利用归并排序的过程记录逆序对数
+    """
+    @staticmethod
+    def reverse_pairs(nums: List[int]) -> int:
+        temp = [0] * len(nums)
+        return ReversePairs.merge_sort(nums, 0, len(nums) - 1, temp)
+
+    @staticmethod
+    def merge_sort(nums, left, right, temp):
+        if left >= right:
+            return 0
+        mid = (left + right) // 2
+
+        count = ReversePairs.merge_sort(nums, left, mid, temp) + ReversePairs.merge_sort(nums, mid + 1, right, temp)
+
+        i, j = left, mid + 1
+        pos = left
+        while i <= mid and j <= right:
+            if nums[i] <= nums[j]:
+                temp[pos] = nums[i]
+                i += 1
+                # count += j - mid - 1
+            else:
+                temp[pos] = nums[j]
+                j += 1
+                count += mid - i + 1
+            pos += 1
+        for k in range(i, mid + 1):
+            temp[pos] = nums[k]
+            # count += j - mid - 1
+            pos += 1
+        for k in range(j, right + 1):
+            temp[pos] = nums[k]
+            pos += 1
+
+        nums[left: right + 1] = temp[left: right + 1]
+        return count
+
 class ReorderLogFiles:
     def solution(self, logs: List[str]) -> List[str]:
         dig_log, let_log = [], []
@@ -132,7 +174,5 @@ class ReorderLogFiles:
 
 
 if __name__ == "__main__":
-    # print(min_number([2, 20, 21, 10]))
-    logs = ["dig1 8 1 5 1", "let1 art can", "dig2 3 6", "let2 own kit dig", "let3 art zero"]
-    reorder_log = ReorderLogFiles()
-    print(reorder_log.solution(logs))
+    nums = [7, 5, 6, 4]
+    print(ReversePairs.reverse_pairs(nums))
