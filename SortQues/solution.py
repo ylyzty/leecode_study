@@ -16,6 +16,7 @@ def min_number(nums: List[int]) -> str:
     :param nums:
     :return:
     """
+
     def quick_sort(left: int, right: int):
         if left >= right:
             return
@@ -33,6 +34,7 @@ def min_number(nums: List[int]) -> str:
     """
     Python3自定义排序规则
     """
+
     def my_compare(str1: str, str2: str):
         if str1 + str2 > str2 + str1:
             return 1
@@ -106,5 +108,31 @@ class MedianFinder:
             return (self.min_heap[0] - self.max_heap[0]) / 2
 
 
+class ReorderLogFiles:
+    def solution(self, logs: List[str]) -> List[str]:
+        dig_log, let_log = [], []
+        for i in range(len(logs)):
+            temp = logs[i].split(' ', 1)[1]
+            temp = temp.replace(' ', '')
+            if temp.isdigit():
+                dig_log.append(logs[i])
+            else:
+                let_log.append(logs[i])
+        let_log.sort(key=functools.cmp_to_key(mycmp=self.compare))
+        let_log.extend(dig_log)
+        return let_log
+
+    def compare(self, log1: str, log2: str):
+        split_log1 = log1.split(' ', 1)
+        split_log2 = log2.split(' ', 1)
+        if split_log1[1] == split_log2[1]:
+            return -1 if split_log1[0] < split_log2[0] else 1
+        else:
+            return -1 if split_log1[1] < split_log2[1] else 1
+
+
 if __name__ == "__main__":
-    print(min_number([2, 20, 21, 10]))
+    # print(min_number([2, 20, 21, 10]))
+    logs = ["dig1 8 1 5 1", "let1 art can", "dig2 3 6", "let2 own kit dig", "let3 art zero"]
+    reorder_log = ReorderLogFiles()
+    print(reorder_log.solution(logs))
