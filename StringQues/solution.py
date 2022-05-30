@@ -89,5 +89,45 @@ class Solution:
                 return Solution.is_match_recursion(s, p[j + 2:])
 
 
+"""
+LeeCode双周赛: 2022/05/28
+"""
+def largestWordCount(messages: List[str], senders: List[str]) -> str:
+    max_words = 0
+    max_sender = ""
+    dict = {}
+
+    for index, sender in enumerate(senders):
+        message = messages[index]
+        length = len(message.split(' '))
+        dict[sender] = dict.setdefault(sender, 0) + length
+        if dict[sender] == max_words:
+            max_sender = max(sender, max_sender)
+        if dict[sender] > max_words:
+            max_words = dict[sender]
+            max_sender = sender
+    return max_sender, max_words
+
+
+def maximumImportance(n: int, roads: List[List[int]]) -> int:
+    temp = [0 for _ in range(n)]
+    for road in roads:
+        temp[road[0]] += 1
+        temp[road[1]] += 1
+    temp.sort()
+    weigh = [i for i in range(1, n + 1)]
+
+    res = 0
+    for i in range(n):
+        res += weigh[i] * temp[i]
+    return res
+
+
+
 if __name__ == "__main__":
-    print(Solution.str_to_int("+"))
+    bms = BookMyShow(5, 9)
+    print(bms.gather(10, 1))
+    print(bms.scatter(3, 3))
+    print(bms.gather(9, 1))
+    print(bms.gather(10, 2))
+    print(bms.gather(2, 0))
