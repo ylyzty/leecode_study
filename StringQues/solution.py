@@ -122,12 +122,3 @@ def maximumImportance(n: int, roads: List[List[int]]) -> int:
         res += weigh[i] * temp[i]
     return res
 
-
-
-if __name__ == "__main__":
-    bms = BookMyShow(5, 9)
-    print(bms.gather(10, 1))
-    print(bms.scatter(3, 3))
-    print(bms.gather(9, 1))
-    print(bms.gather(10, 2))
-    print(bms.gather(2, 0))
