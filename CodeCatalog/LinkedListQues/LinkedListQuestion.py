@@ -1,5 +1,6 @@
-from ListNode import *
+from CodeCatalog.LinkedListQues.ListNode import *
 
+# from ListNode import *
 """
 代码随想录: 链表部分
 """
@@ -111,6 +112,10 @@ class MyLinkedList:
 
 
 class ReverseList:
+    """
+    LeeCode 206: 翻转链表
+    """
+
     def solution(self, head: ListNode) -> ListNode:
         if not head or not head.next:
             return head
@@ -128,6 +133,10 @@ class ReverseList:
 
 
 class SwapPairs:
+    """
+    LeeCode 24: 两两交换链表中的节点
+    """
+
     def solution(self, head: ListNode) -> ListNode:
         virtual_head = ListNode(0, head)
         previous, current = virtual_head, head
@@ -145,6 +154,50 @@ class SwapPairs:
         return virtual_head.next
 
 
+class RemoveNthFromEnd:
+    """
+    LeeCode 19: 删除链表的倒数第 n 个节点
+    """
+
+    def solution(self, head: ListNode, n: int) -> ListNode:
+        virtualHead = ListNode(0, head)
+        slow, fast = virtualHead, virtualHead
+
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            slow = slow.next
+            fast = fast.next
+
+        slow.next = slow.next.next
+        return virtualHead.next
+
+
+class GetIntersectionNode:
+    """
+    LeeCode: 链表相交
+    headA 链表长度为 a, headB 链表长度为 b, 链表相交长度为 c
+
+    遍历完 headA 再遍历 headB, 到公共节点, 共经过 a + (b - c + 1) 个节点
+    遍历完 headB 再遍历 headA, 到公共节点, 共经过 b + (a - c + 1) 个节点
+
+    - 若 c = 0, 即不存在公共节点, 则当前节点指向 None
+    - 若 c > 0, 即存在公共节点, 则当前节点指向公共链表的第一个节点
+    """
+
+    def solution(self, headA: ListNode, headB: ListNode) -> ListNode:
+        A, B = headA, headB
+        while A != B:
+            A = A.next if A else headB
+            B = B.next if B else headA
+        return A
+
+
+class DeleteCycle:
+    def solution(self, head: ListNode) -> ListNode:
+        pass
+
+
 def printLinkedList(head: ListNode):
     print(f"Current LinkedList is: ", end="")
     node = head
@@ -155,6 +208,7 @@ def printLinkedList(head: ListNode):
         else:
             print("\n", end="")
         node = node.next
+
 
 """
 测试代码
