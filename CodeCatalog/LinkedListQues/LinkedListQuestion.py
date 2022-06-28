@@ -1,6 +1,6 @@
-from CodeCatalog.LinkedListQues.ListNode import *
+# from CodeCatalog.LinkedListQues.ListNode import *
 
-# from ListNode import *
+from ListNode import *
 """
 代码随想录: 链表部分
 """
@@ -186,16 +186,46 @@ class GetIntersectionNode:
     """
 
     def solution(self, headA: ListNode, headB: ListNode) -> ListNode:
-        A, B = headA, headB
-        while A != B:
-            A = A.next if A else headB
-            B = B.next if B else headA
-        return A
+        a, b = headA, headB
+        while a != b:
+            a = a.next if a else headB
+            b = b.next if b else headA
+        return a
 
 
-class DeleteCycle:
+class DetectCycle:
+    """
+    LeeCode 142: 环形链表 II
+    设 链表头部到环之前有 a 个节点, 链表环内有 b 个节点
+    定义快慢指针 fast, slow, fast每次走两步, slow每次走一步
+    - 若 fast 走到链表尾部, 则说明链表无环 return None
+    - 若 fast 与 slow 相遇, 则 fast = 2 * slow 且 fast - slow = n * b
+    即 fast = 2 * n * b, slow = n * b
+
+    slow 指针走到链表环第一个节点时步数表达式: a + n * b
+    所以 slow 指针再走 a 步即到达链表环第一个节点
+
+    如何确定 a 呢 ?
+    将指针 fast 重新指向 head, head 走 a 步也到达链表环第一个节点
+    即同时移动 fast 和 slow 直至其第二次相遇
+    """
     def solution(self, head: ListNode) -> ListNode:
-        pass
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow == fast:
+                break
+
+        if not fast or not fast.next:
+            return None
+
+        fast = head
+        while fast != slow:
+            slow = slow.next
+            fast = fast.next
+        return fast
 
 
 def printLinkedList(head: ListNode):
@@ -214,31 +244,14 @@ def printLinkedList(head: ListNode):
 测试代码
 """
 if __name__ == "__main__":
-    linkedList = MyLinkedList()
-    linkedList.addAtHead(1)
-    printLinkedList(linkedList.head)
 
-    linkedList.addAtTail(3)
-    printLinkedList(linkedList.head)
-
-    linkedList.addAtIndex(1, 2)
-    printLinkedList(linkedList.head)
-
-    print(linkedList.get(1))
-    printLinkedList(linkedList.head)
-
-    linkedList.deleteAtIndex(1)
-    printLinkedList(linkedList.head)
-
-    print(linkedList.get(1))
-    printLinkedList(linkedList.head)
-
-    node1 = ListNode(1, None)
+    node1 = ListNode(3, None)
     node2 = ListNode(2, None)
-    node3 = ListNode(3, None)
+    node3 = ListNode(0, None)
     node4 = ListNode(4, None)
     node1.next = node2
     node2.next = node3
     node3.next = node4
-    swapPais = SwapPairs()
-    swapPais.solution(node1)
+    node4.next = node2
+
+    delteCyclt.solution(node1)
